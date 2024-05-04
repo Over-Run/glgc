@@ -31,9 +31,10 @@ val jdkEnablePreview: String by rootProject
 val jdkEarlyAccessDoc: String? by rootProject
 
 val targetJavaVersion = jdkVersion.toInt()
+val overrunglVersion: String by rootProject
 
 val projDevelopers = arrayOf(
-    Developer("example")
+    Developer("squid233")
 )
 
 data class Organization(
@@ -77,7 +78,7 @@ version = projVersion
 repositories {
     mavenCentral()
     // snapshot repositories
-    //maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
     //maven("https://oss.sonatype.org/content/repositories/snapshots")
 
     //maven("https://s01.oss.sonatype.org/content/repositories/releases")
@@ -86,6 +87,10 @@ repositories {
 
 dependencies {
     // add your dependencies
+    implementation(platform("io.github.over-run:overrungl-bom:$overrunglVersion"))
+    implementation("io.github.over-run:overrungl")
+    implementation("io.github.over-run:overrungl-opengl")
+    implementation("io.github.over-run:marshal:0.1.0-alpha.24-jdk22") // todo
 }
 
 tasks.withType<JavaCompile> {
@@ -234,6 +239,7 @@ if (hasPublication.toBoolean() && publicationRepo != null) {
                 else publicationRepo.releaseRepo
             )
         }
+        mavenLocal()
     }
 
     signing {
